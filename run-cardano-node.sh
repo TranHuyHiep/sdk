@@ -7,19 +7,16 @@ export SNAPSHOT_DIGEST=latest
 
 # Kiểm tra nếu thư mục blockchain chưa tồn tại, tải snapshot mới
 DIR="/opt/cardano/config/preprod/db/"
-if [ ! -d "$DIR" ]; then
-  echo "Tải snapshot Cardano blockchain..."
-  mithril-client cardano-db download $SNAPSHOT_DIGEST
-else
-  echo "Dữ liệu của Blockchain Cardano đã tồn tại"
-fi
+# if [ ! -d "$DIR" ]; then
+#   echo "Tải snapshot Cardano blockchain..."
+#   mithril-client cardano-db download $SNAPSHOT_DIGEST
+# else
+#   echo "Dữ liệu của Blockchain Cardano đã tồn tại"
+# fi
+echo "Tải snapshot Cardano blockchain..."
+mithril-client cardano-db download $SNAPSHOT_DIGEST
+echo "Dữ liệu của Blockchain Cardano đã tồn tại"
 
 # Khởi động cardano-node
 echo "Khởi động cardano-node..."
-cardano-node run \
-  --config /opt/cardano/config/preprod/config.json \
-  --database-path /opt/cardano/config/preprod/db \
-  --socket-path /opt/cardano/config/preprod/db/node.socket \
-  --host-addr 0.0.0.0 \
-  --port 3001 \
-  --topology /opt/cardano/config/preprod/topology.json >/dev/null 2>&1
+cardano-node run --config /opt/cardano/config/preprod/config.json --database-path /opt/cardano/config/preprod/db --socket-path /opt/cardano/config/preprod/db/node.socket --host-addr 0.0.0.0 --port 3001 --topology /opt/cardano/config/preprod/topology.json >/dev/null 2>&1

@@ -26,7 +26,7 @@
     "example": "tsx examples/example.ts",
     "prisma:dbpull": "prisma db pull",
     "prisma:generate": "prisma generate",
-    "syncer:start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/syncer/main.ts",
+    "syncer:start": "node --experimental-wasm-modules --no-warnings=ExperimentalWarning --loader ts-node/esm src/syncer/main.ts",
     "type-check": "tsc --noEmit"
   },
   "keywords": [

@@ -16,11 +16,11 @@ services:
       dockerfile: Dockerfile.syncer
     restart: always
     environment:
-      ENVIRONMENT: prepord
+      ENVIRONMENT:
       OGMIOS_HOST: ogmios
       OGMIOS_PORT: 1337
       REDIS_URL: redis://default:minswap@redis:6379
-      POSTGRES_URL: postgresql://postgres:minswap@postgres:5432/syncer?schema=public&connection_limit=5
+      POSTGRES_URL: postgresql://postgres:minswap@postgres:5432/syncer?schema=public&connection_limit=10
       SYNC_START_POINT:
     command: pnpm run syncer:start
 
@@ -51,14 +51,8 @@ services:
       - cardano-node
     ports:
       - 1337:1337
-    command: [
-      "--host", "0.0.0.0",
-      "--node-socket", "/ipc/node.socket",
-      "--node-config", "/config/cardano-node/config.json"
-    ]
     volumes:
-      - cardano-socket:/ipc
-      - ./server/config/network/preprod:/config
+      - cardano-db:/opt/cardano/config/preprod/db
 
 volumes:
   redis-data: {}
