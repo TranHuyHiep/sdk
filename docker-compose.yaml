@@ -1,10 +1,22 @@
 services:
+  cardano-node:
+    build:
+      context: .
+      dockerfile: Dockerfile.cardano-node
+    environment:
+      - NETWORK=preprod
+    volumes:
+      - cardano-db:/data/testnet
+      - cardano-socket:/opt/cardano/config/preprod/db
+    ports:
+      - 3001:3001
+
   syncer:
     build:
       dockerfile: Dockerfile.syncer
     restart: always
     environment:
-      ENVIRONMENT:
+      ENVIRONMENT: prepord
       OGMIOS_HOST: ogmios
       OGMIOS_PORT: 1337
       REDIS_URL: redis://default:minswap@redis:6379
@@ -34,14 +46,22 @@ services:
       - "5432:5432"
 
   ogmios:
-    image: cardanosolutions/cardano-node-ogmios:v6.5.0_9.0.0-${OGMIOS_NETWORK}
-    restart: always
+    image: cardanosolutions/cardano-node-ogmios:v6.5.0_9.0.0-preprod
+    depends_on:
+      - cardano-node
     ports:
       - 1337:1337
+    command: [
+      "--host", "0.0.0.0",
+      "--node-socket", "/ipc/node.socket",
+      "--node-config", "/config/cardano-node/config.json"
+    ]
     volumes:
-      - ogmios-data:/db
+      - cardano-socket:/ipc
+      - ./server/config/network/preprod:/config
 
 volumes:
   redis-data: {}
-  ogmios-data: {}
   postgres-data: {}
+  cardano-db: {}
+  cardano-socket: {}

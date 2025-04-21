@@ -1,0 +1,9 @@
+# Chọn base image
+FROM ghcr.io/blinklabs-io/cardano-node:latest
+
+# Sao chép các tệp script vào container
+COPY run-cardano-node.sh /run-cardano-node.sh
+RUN chmod +x /run-cardano-node.sh
+
+# Command mặc định khi chạy container
+CMD ["/run-cardano-node.sh"]
