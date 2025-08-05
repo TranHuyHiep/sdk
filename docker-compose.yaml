@@ -1,0 +1,49 @@
+services:
+  syncer:
+    build:
+      dockerfile: Dockerfile.syncer
+    restart: always
+    environment:
+      ENVIRONMENT:
+      OGMIOS_HOST: ogmios1acsccslfr5z3semhvgx.preprod-v6.ogmios-m1.demeter.run
+      OGMIOS_PORT: 443
+      REDIS_URL: redis://default:minswap@redis:6379
+      POSTGRES_URL: postgresql://postgres:minswap@postgres:5432/syncer?schema=public&connection_limit=10
+      SYNC_START_POINT: 7790880c9f0ff09990f253dd1bf1a55d2a2e5340bf694e5c0bb166439e513e45.10918782
+    command: pnpm run syncer:start
+
+  redis:
+    image: redis:7
+    restart: always
+    command: --requirepass minswap
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: syncer
+      POSTGRES_PASSWORD: minswap
+    volumes:
+      - ./src/syncer/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  redis-data: {}
+  postgres-data: {}
+  cardano-db: {}
+  cardano-socket: {}
+  node-mainnet-db:
+  wallet-mainnet-db:
+  node-preprod-db:
+  wallet-preprod-db:
+  node-preview-db:
+  wallet-preview-db:
+  node-ipc:
+  node-config:
+  kupo-db:
