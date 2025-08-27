@@ -16,14 +16,16 @@ export function newRedis(url: string, options?: RedisOptions): Redis {
   return redis;
 }
 
-export async function newOgmiosInteractionCtx(host: string, port: number): Promise<InteractionContext> {
+export async function newOgmiosInteractionCtx(): Promise<InteractionContext> {
   const ogmiosCtx = await createInteractionContext(
     (err: Error) => console.error("ogmios error", err),
     (code, reason) => console.info("ogmios connection closed", { code, reason }),
     {
       connection: {
-        host: host,
-        port: port
+        address: {
+          http: "https://ogmios1acsccslfr5z3semhvgx.preprod-v6.ogmios-m1.demeter.run",
+          webSocket: "wss://ogmios1acsccslfr5z3semhvgx.preprod-v6.ogmios-m1.demeter.run"
+        }
       }
     },
   )

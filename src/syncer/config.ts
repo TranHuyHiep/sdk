@@ -12,11 +12,12 @@ export type SyncerConfig = {
   ogmios: {
     host: string
     port: number
+    tls: boolean
   }
 }
 
 export function getSyncerConfig(): SyncerConfig {
-  const networkEnv = parseEnvironment(getEnv("ENVIRONMENT"))
+  const networkEnv = NetworkEnvironment.TESTNET_PREPROD
   const networkId = networkEnv === NetworkEnvironment.MAINNET ? NetworkId.MAINNET : NetworkId.TESTNET
   return {
     networkId: networkId,
@@ -25,8 +26,9 @@ export function getSyncerConfig(): SyncerConfig {
     postgress: getEnv("POSTGRES_URL"),
     syncStartPoint: parsePointOrOrigin(getEnv("SYNC_START_POINT")),
     ogmios: {
-      host: getEnv("OGMIOS_HOST"),
-      port: Number(getEnv("OGMIOS_PORT"))
+      host: "ogmios1acsccslfr5z3semhvgx.preprod-v6.ogmios-m1.demeter.run",
+      port: 443,
+      tls: true
     },
   }
 }
