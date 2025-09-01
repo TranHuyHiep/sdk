@@ -21,7 +21,7 @@ services:
       # OGMIOS_PORT: 443
       REDIS_URL: redis://default:minswap@redis:6379
       POSTGRES_URL: postgresql://postgres:minswap@postgres:5432/syncer?schema=public&connection_limit=10
-      SYNC_START_POINT:
+      SYNC_START_POINT: 7790880c9f0ff09990f253dd1bf1a55d2a2e5340bf694e5c0bb166439e513e45.10918782
     command: pnpm run syncer:start
 
   redis:
